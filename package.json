@@ -1,0 +1,16 @@
+{
+    "name": "themebot",
+    "version": "1.0.0",
+    "description": "its a bot that plays selected themes",
+    "main": "",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Comrade_Wolfskii",
+    "dependencies": {
+        "@discordjs/opus": "github:discordjs/opus",
+        "discord.js": "^12.3.1",
+        "request": "^2.88.2",
+        "xmlhttprequest": "^1.8.0"
+    }
+}

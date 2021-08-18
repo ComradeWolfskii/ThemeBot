@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs')
-const token = 'ODIzMjA1NDQzMzMyNDcyODYy.YFdb0A.i7H8oU05QXPeWPhwu2LRs_i38AA';
-//var disconnect_user = [368578349892632576n]
+//put your bots token in the const token
+const token = 'your_bot_token';
 var json = [
     {id: 0, in_vc: false},
     {id: 1, bot_channel_id: ""}
@@ -15,6 +15,7 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`); 
 })
 client.on('message', message => {
+//command !joinvc to join the user's vc
    if (message.content === '!joinvc'){
         var channelid = message.member.voice.channelID;
        
@@ -26,8 +27,8 @@ client.on('message', message => {
             json[objIndex].bot_channel_id = channelid
             objIndex = json.findIndex((obj => obj.id == 0));
             json[objIndex].in_vc = true
-            fs.writeFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json`, (JSON.stringify(json)))
-            var in_vc_json = fs.readFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
+            fs.writeFileSync(`file path of /ThemeBot_data.json`, (JSON.stringify(json)))
+            var in_vc_json = fs.readFileSync(`file path of /ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
             var in_vc_data = JSON.parse(in_vc_json)
             console.log(in_vc_data[objIndex].in_vc)
         }).catch(e => {
@@ -35,6 +36,7 @@ client.on('message', message => {
             console.error(e);
         })
     }
+//command !leavevc to leave the user's vc
     if (message.content == `!leavevc`) {
         var channelid = message.member.voice.channelID;
         const channel = client.channels.cache.get(channelid);
@@ -42,8 +44,8 @@ client.on('message', message => {
         channel.leave()
         objIndex = json.findIndex((obj => obj.id == 0));
         json[objIndex].in_vc = false
-        fs.writeFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json`, (JSON.stringify(json)))
-        var in_vc_json = fs.readFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
+        fs.writeFileSync(`file path of /ThemeBot_data.json`, (JSON.stringify(json)))
+        var in_vc_json = fs.readFileSync(`file path of /ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
         var in_vc_data = JSON.parse(in_vc_json)
         console.log(in_vc_data[objIndex].in_vc)
     }
@@ -52,45 +54,32 @@ client.on('message', message => {
 
 client.on('voiceStateUpdate', (oldMember, newMember) =>{
 
-//    for (var i = 0; i < disconnect_user.length; i++){
-//        let voice = newMember.member.voice
-//        let user = newMember.member.displayName
-//       let voicechannel = newMember.member.voice.channelID
-//        const channel = client.channels.cache.get(voicechannel);
-        //console.log(voice)
-//        if (newMember.id == disconnect_user[i]){
-//            if (newMember.channelID != null){
-//                console.log('they are in the vc')
-//                voice.kick()
-//                console.log(`${user} has been kicked from vc`)
-//       }
-//    }}
-
-
-    var in_vc_json = fs.readFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
+    var in_vc_json = fs.readFileSync(`file path of /ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
     objIndex = json.findIndex((obj => obj.id == 1));
     var in_vc_data = JSON.parse(in_vc_json)
     var vc_to_join_id = in_vc_data[objIndex].bot_channel_id
     var monsieur_vc = client.channels.cache.get(vc_to_join_id);
     let thepersonid = newMember.id
-
-
+//require's ffmpeg to work
+//checks if someone joined the bot's vc
     if (newMember.channelID == vc_to_join_id){
         if (oldMember.channelID != vc_to_join_id){
             console.log("someone joined my channel")
             monsieur_vc.join().then(connection =>{
+                //you can put for the case the users id and the theme in the connect.play()
                         switch (thepersonid) {
-                            case '359836288851116036':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Bitconnect Screaming 2 - Sound effect.mp3`)
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
-                            case '360390822916653056':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Normal Sharingan Sound Effect.mp3`)
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
-                            case '498546643818512404':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Benji.mp3`)
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
+                                //if none of the cases play then the default theme will
                             default:
-                                connection.play('C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Super Smash Bros Ultimate Challenger Approaching TEMPLATE.mp3')
+                                connection.play('mp3 file path')
                                 break;
                         }
                     
@@ -98,9 +87,9 @@ client.on('voiceStateUpdate', (oldMember, newMember) =>{
         }
     }
 
-
+//checks if someone left the bot's vc
     if (newMember.channelID != vc_to_join_id){
-        var in_vc_json = fs.readFileSync(`C:/Users/miste/OneDrive/Desktop/notification_bot/ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
+        var in_vc_json = fs.readFileSync(`file path of /ThemeBot_data.json` , {encoding:'utf8', flag:'r'})
         objIndex = json.findIndex((obj => obj.id == 1));
         var in_vc_data = JSON.parse(in_vc_json)
         var vc_to_join_id = in_vc_data[objIndex].bot_channel_id
@@ -109,17 +98,18 @@ client.on('voiceStateUpdate', (oldMember, newMember) =>{
             console.log("someone left my channel")
             mr_vc.join().then(connection =>{
                         switch (thepersonid) {
-                            case '359836288851116036':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Bitconnect Screaming 2 - Sound effect.mp3`)
+                                //you can put for the case the users id and the theme in the connect.play()
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
-                            case '360390822916653056':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Enen no shouboutaiBast sfx ll.mp3`)
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
-                            case '498546643818512404':
-                                connection.play(`C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Benji.mp3`)
+                            case 'user_id':
+                                connection.play(`mp3 file path`)
                                 break;
                             default:
-                                connection.play('C:/Users/miste/OneDrive/Desktop/notification_bot/themes/Super Smash Bros (3DSWii U, Ultimate) - Blast KO sound.mp3')
+                                connection.play('mp3 file path')
                                 break;
                                 
                         }
